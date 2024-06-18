@@ -210,11 +210,6 @@ class Worker {
                 constants.TOKEN_MINT
             )
             const claimer = await this.createClaimInstruction(constants.TOKEN_MINT, this.wallet, claimInfo);
-            const closeInstruction = createCloseAccountInstruction(
-                accountATA,
-                feeAcc,
-                this.wallet.publicKey
-            );
             const signature = await claimer
                 .preInstructions([
                     ComputeBudgetProgram.setComputeUnitPrice({
@@ -223,7 +218,7 @@ class Worker {
                     ComputeBudgetProgram.setComputeUnitLimit({units: gasLimit}),
                     createAtaInstruction
                 ])
-                .postInstructions([closeInstruction])
+                .postInstructions()
                 .rpc()
             const status = await this.connection.confirmTransaction(signature, "finalized");
             logger.info(`${this.wallet.publicKey.toBase58()} 领取成功,hash: ${signature}`);
