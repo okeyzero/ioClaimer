@@ -218,7 +218,6 @@ class Worker {
                     ComputeBudgetProgram.setComputeUnitLimit({units: gasLimit}),
                     createAtaInstruction
                 ])
-                .postInstructions()
                 .rpc()
             const status = await this.connection.confirmTransaction(signature, "finalized");
             logger.info(`${this.wallet.publicKey.toBase58()} 领取成功,hash: ${signature}`);
